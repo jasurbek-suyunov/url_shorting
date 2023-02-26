@@ -1,6 +1,10 @@
 package repository
 
-import "github.com/SuyunovJasurbek/url_shorting/models"
+import (
+	"context"
+
+	"github.com/SuyunovJasurbek/url_shorting/models"
+)
 
 type StorageI interface {
 	Token() TokenI 
@@ -12,9 +16,9 @@ type TokenI interface {
 }
 
 type UserI interface {
-	CreateUser(url models.Url) (models.User, error)
+	CreateUser(ctx context.Context,  url *models.User) (*models.User, error)
 }
 
 type UrlI interface {
-	CreateUrl(user models.Url) (models.Url, error)
+	CreateUrl(ctx context.Context, user *models.Url) (*models.Url, error)
 }
