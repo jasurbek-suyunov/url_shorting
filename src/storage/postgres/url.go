@@ -35,7 +35,7 @@ const (
 // DeleteUrl implements storage.UrlI
 func (u *urlRepo) DeleteUrl(ctx context.Context, short_path string) error {
 
-	query := fmt.Sprintf(`DELETE FROM %s WHERE  short_path= $1`, urlTable)
+	query := fmt.Sprintf(`DELETE FROM %s WHERE short_path = $1`, urlTable)
 	_, err := u.db.Exec(query, short_path)
 	if err != nil {
 		return err
@@ -43,7 +43,6 @@ func (u *urlRepo) DeleteUrl(ctx context.Context, short_path string) error {
 
 	return nil
 }
-
 // GetUrlByID implements storage.UrlI
 func (u *urlRepo) GetUrlByID(ctx context.Context, UserID string) (*models.Url, error) {
 	url := models.Url{}
@@ -73,7 +72,6 @@ func (u *urlRepo) GetUrlByID(ctx context.Context, UserID string) (*models.Url, e
 	}
 	return &url, nil
 }
-
 // GetUrls implements storage.UrlI
 func (u *urlRepo) GetUrls(ctx context.Context, url string) (*models.GetAllUrl, error) {
 	// var urls *models.GetAllUrl
@@ -117,11 +115,10 @@ func (u *urlRepo) GetUrls(ctx context.Context, url string) (*models.GetAllUrl, e
 	// return urls, nil
 	return nil, nil
 }
-
 // UpdateUrl implements storage.UrlI
 func (u *urlRepo) UpdateUrl(ctx context.Context, url *models.Url) (*models.Url, error) {
 	upt := models.Url{}
-	query := fmt.Sprintf("UPDATE %s SET short_path = $1 updated_at=$2 WHERE id = $3", urlTable)
+	query := fmt.Sprintf("UPDATE %s SET short_path = $1 ,updated_at= $2 WHERE id = $3", urlTable)
 	rows := u.db.QueryRow(query, url.ShortPath, url.UpdatedAt, url.ID)
 	err := rows.Scan(
 		&upt.ID,
