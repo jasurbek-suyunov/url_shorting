@@ -6,17 +6,17 @@ import (
 	"os"
 	"time"
 
+	"github.com/SuyunovJasurbek/url_shorting/config"
+	"github.com/SuyunovJasurbek/url_shorting/src/repository"
 	"github.com/go-redis/redis/v8"
-	"gitlab.com/finiso/fso_user_service/config"
-	"gitlab.com/finiso/fso_user_service/storage"
 	"golang.org/x/net/context"
 )
 
 type redisCache struct {
 	rdb *redis.Client
 
-	token storage.TokenI
-	user  storage.UserI
+	token repository.TokenI
+	user  repository.UserI
 }
 
 // consts for redis connection
@@ -37,7 +37,7 @@ func NewRedisCache(cfg config.Config, expires time.Duration) (*redisCache, error
 	// ...2: opening connection to redis
 	rdb := redis.NewClient(&redis.Options{
 		Addr:        fmt.Sprintf("%s:%d", cfg.RedisHost, cfg.RedisPort),
-		Password:    ",          // no password set
+		Password:    "",          // no password set
 		DB:          cfg.RedisDB, // use default DB
 		PoolTimeout: readTimeout,
 		PoolSize:    cfg.RedisPoolSize,
@@ -57,18 +57,18 @@ func NewRedisCache(cfg config.Config, expires time.Duration) (*redisCache, error
 }
 
 // ...1: Token
-func (r *redisCache) Token() storage.TokenI {
+func (r *redisCache) Token() repository.TokenI {
 	if r.token == nil {
-		r.token = NewTokenCacheRepo(r.rdb)
+		// r.token = NewTokenCacheRepo(r.rdb)
 	}
 
 	return r.token
 }
 
 // ...2: User
-func (r *redisCache) User() storage.UserI {
+func (r *redisCache) User() repository.UserI {
 	if r.user == nil {
-		r.user = NewUserCacheRepo(r.rdb)
+		// r.user = NewUserCacheRepo(r.rdb)
 	}
 
 	return r.user
