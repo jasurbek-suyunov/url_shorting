@@ -43,6 +43,7 @@ func (h *Handler) CreateUrl(c *gin.Context) {
 	// return result if no error
 	c.JSON(201, url_result)
 }
+
 // Create Url
 // @Security ApiKeyAuth
 // @Summary  Get Urls
@@ -50,7 +51,7 @@ func (h *Handler) CreateUrl(c *gin.Context) {
 // @Tags         URL
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  models.GetAllUrl "GetUrls successful"
+// @Success      200  {object} []models.Url "GetUrls successful"
 // @Response     400 {object}  models.Error "Bad request"
 // @Response     401 {object}  models.Error "Unauthorized"
 // @Failure  	 500  {object}  models.Error "Internal server error"
@@ -65,6 +66,7 @@ func (h *Handler) GetUrls(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, urls)
 }
+
 // Get Url
 // @Security ApiKeyAuth
 // @Summary  Get Url
@@ -98,6 +100,7 @@ func (h *Handler) GetUrlByID(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, url_result)
 }
+
 // Delete Url
 // @Security ApiKeyAuth
 // @Summary  Delete Url

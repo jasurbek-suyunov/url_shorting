@@ -47,7 +47,10 @@ const docTemplate = `{
                     "200": {
                         "description": "GetUrls successful",
                         "schema": {
-                            "$ref": "#/definitions/models.GetAllUrl"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Url"
+                            }
                         }
                     },
                     "400": {
@@ -412,42 +415,11 @@ const docTemplate = `{
                 }
             }
         },
-        "models.GetAllUrl": {
-            "type": "object",
-            "properties": {
-                "meta": {
-                    "$ref": "#/definitions/models.Meta"
-                },
-                "urls": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Url"
-                    }
-                }
-            }
-        },
         "models.Message": {
             "type": "object",
             "properties": {
                 "message": {
                     "type": "string"
-                }
-            }
-        },
-        "models.Meta": {
-            "type": "object",
-            "properties": {
-                "current_page": {
-                    "type": "integer"
-                },
-                "per_page": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                },
-                "total_page": {
-                    "type": "integer"
                 }
             }
         },

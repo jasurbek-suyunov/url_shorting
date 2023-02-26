@@ -139,7 +139,7 @@ func (s *Service) GetUrl(ctx context.Context, short_path string) (string, error)
 					log.Println("time set error: ", err)
 					return "", err
 				}
-				err = s.storage.Url().DeleteUrl(ctx, short_path)
+				err = s.storage.Url().DeleteUrlByShortURL(ctx, short_path)
 				if err != nil {
 					log.Println("delete from repo: ", err)
 					return "", err
@@ -180,7 +180,7 @@ func (s *Service) GetUrlByID(ctx context.Context, id string) (*models.Url, error
 	return url, nil
 }
 func (s *Service) DeleteUrl(ctx context.Context, id string) error {
-	err := s.storage.Url().DeleteUrl(ctx, id)
+	err := s.storage.Url().DeleteUrlByID(ctx, id)
 	if err != nil {
 		return err
 	}
