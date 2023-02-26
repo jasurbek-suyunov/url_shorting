@@ -12,21 +12,26 @@ type urlRepo struct {
 	db *sqlx.DB
 }
 
+// GetUrlByShortPath implements storage.UrlI
+func (*urlRepo) GetUrlByShortPath(ctx context.Context, shortPath string) (*models.Url, error) {
+	panic("unimplemented")
+}
+
 const (
 	urlTable  = "urls"
 	urlFields = ` id, user_id, org_path, short_path, counter, created_at,updated_at,status `
 )
 
 // DeleteUrl implements storage.UrlI
-func (u *urlRepo) DeleteUrl(ctx context.Context, urlID string) (*models.Url, error) {
+func (u *urlRepo) DeleteUrl(ctx context.Context, urlID string) error {
 
 	query := fmt.Sprintf(`DELETE FROM %s WHERE id = $1`, urlTable)
 	_, err := u.db.Exec(query, urlID)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return nil, nil
+	return nil
 }
 
 // GetUrlByID implements storage.UrlI

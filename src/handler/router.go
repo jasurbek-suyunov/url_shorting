@@ -35,32 +35,39 @@ func SetupRouter() *gin.Engine {
 		log.Println(err)
 	}
 
-	// get service
+	// get service and handler
 	services := service.NewService(db, redis)
 	handler := NewHandler(services)
 
+	// Routes
+	r.GET("/ping", handler.Ping)
+
 	// swagger
-	url := ginSwagger.URL("/swagger/doc.json") // The url pointing to API definition
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+	swagger := ginSwagger.URL("/swagger/doc.json") // The url pointing to API definition
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, swagger))
 
-	public := r.Group("auth")
-	protected := r.Group("/")
+	r.GET("", handler.API)
+	r.GET("/:id", handler.GetUrl)
 
-	public.GET("/in/:url", handler.GetOriginalUrl)
+	app := r.Group("/api/v1")
+	app.GET("", handler.API)
 
-	public.POST("singup", handler.SignUp)
-	public.POST("signin", handler.SignIn)
-	public.POST("signout", handler.SignOut)
+	auth := app.Group("auth")
+	{
+		auth.POST("singup", handler.SignUp)
+		auth.POST("signin", handler.SignIn)
+		auth.POST("signout", handler.SignOut)
+	}
 
-	// Protected routes
-
-	protected.Use(middlewares.Auth("secret"))
-
-	protected.POST("/url", handler.CreateUrl)
-	protected.GET("/url", handler.GetUrls)
-	protected.GET("/url/:id", handler.GetSingleUrl)
-	protected.DELETE("/url/:id", handler.DeleteUrl)
-	protected.PUT("/url/:id", handler.UpdateUrl)
+	app.Use(middlewares.Auth())
+	url := app.Group("url")
+	{
+		url.POST("", handler.CreateUrl)
+		url.GET("", handler.GetUrls)
+		url.GET(":id", handler.GetUrlByID)
+		url.DELETE(":id", handler.DeleteUrl)
+		url.PUT(":id", handler.UpdateUrl)
+	}
 
 	return r
 }

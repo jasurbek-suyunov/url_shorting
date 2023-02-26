@@ -22,8 +22,9 @@ type UserI interface {
 
 type UrlI interface {
 	CreateUrl(ctx context.Context, url *models.Url) (*models.Url, error)
-	DeleteUrl(ctx context.Context, urlID string) (*models.Url, error)
+	DeleteUrl(ctx context.Context, urlID string) error
 	GetUrlByID(ctx context.Context, urlID string) (*models.Url, error)
+	GetUrlByShortPath(ctx context.Context, shortPath string) (*models.Url, error)
 	GetUrls(ctx context.Context, url string) (*models.GetAllUrl, error)
 	UpdateUrl(ctx context.Context, url *models.Url) (*models.Url, error)
 }

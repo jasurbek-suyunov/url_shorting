@@ -1,15 +1,15 @@
 package models
 
 type Url struct {
-	ID        string `json:"id" db:"id"`
-	UserID    string `json:"user_id" db:"user_id"`
-	OrgPath   string `json:"org_path" db:"org_path"`
-	ShortPath string `json:"short_path" db:"short_path"`
-	Counter   int    `json:"counter" db:"counter"`
-	Status    int    `json:"status" db:"status"`
-	CreatedAt int64  `json:"created_at" db:"created_at"`
-	UpdatedAt int64  `json:"updated_at" db:"updated_at"
-	`
+	ID         string `json:"id" db:"id"`
+	UserID     string `json:"user_id" db:"user_id"`
+	OrgPath    string `json:"org_path" db:"org_path"`
+	ShortPath  string `json:"short_path" db:"short_path"`
+	Counter    int    `json:"counter" db:"counter"`
+	Status     int    `json:"status" db:"status"`
+	QrCodePath string `json:"qr_code_path" db:"qr_code_path"`
+	CreatedAt  int64  `json:"created_at" db:"created_at"`
+	UpdatedAt  int64  `json:"updated_at" db:"updated_at"`
 }
 
 type UrlRequest struct {
