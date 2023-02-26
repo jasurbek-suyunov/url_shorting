@@ -1,50 +1,31 @@
 package main
 
 import (
-	"io"
-
+	"github.com/SuyunovJasurbek/url_shorting/middlewares"
+	"github.com/SuyunovJasurbek/url_shorting/src/handler"
 	"github.com/gin-gonic/gin"
 )
 
 func setupRouter() *gin.Engine {
   r := gin.Default()
 
-  r.POST("/singup", func(c *gin.Context) {
-    body, _ := io.ReadAll(c.Request.Body)
+  public := r.Group("/")
+  protected := r.Group("/")
 
-    c.String(200, string(body))
-  })
-  r.POST("/login", func(c *gin.Context) {
-    body, _ := io.ReadAll(c.Request.Body)
+  public.GET("/in/:url", handler.GetOriginalUrl)
 
-    c.String(200, string(body))
-  })
-  r.POST("/url", func(c *gin.Context) {
-    body, _ := io.ReadAll(c.Request.Body)
+  public.POST("/singup", handler.SignUp)
+  public.POST("/login", handler.Login)
 
-    c.String(200, string(body))
-  })
-  r.GET("/url", func(c *gin.Context) {
-    c.String(200, "Hello")
-  })
-  r.GET("/url/:id", func(c *gin.Context) {
-    id := c.Param("id")
-    c.String(200, "Hello %s", id)
-  })
-  r.DELETE("/url/:id", func(c *gin.Context) {
-    id := c.Param("id")
-    c.String(200, "Hello %s", id)
-  })
-  r.PUT("/url/:id", func(c *gin.Context) {
-    id := c.Param("id")
-    c.String(200, "Hello %s", id)
-  })
+  // Protected routes
 
-  // Redirect url
-  r.GET("/in/:url", func(c *gin.Context) {
-    url := c.Param("url")
-    c.String(200, "Hello %s", url)
-  })
+  protected.Use(middlewares.Auth("secret"))
+
+  protected.POST("/url",  handler.CreateUrl)
+  protected.GET("/url", handler.GetUrls)
+  protected.GET("/url/:id", handler.GetSingleUrl)
+  protected.DELETE("/url/:id", handler.DeleteUrl)
+  protected.PUT("/url/:id", handler.UpdateUrl)
 
   return r
 }
