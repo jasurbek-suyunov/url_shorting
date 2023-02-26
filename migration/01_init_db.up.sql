@@ -14,10 +14,12 @@ CREATE TABLE IF NOT EXISTS "users" (
 CREATE TABLE IF NOT EXISTS "urls" (
     "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     "user_id" UUID,
-    "created_at" INT NOT NULL,
     "org_path" TEXT NOT NULL,
-    "short_hash" TEXT NOT NULL,
-    "counter" INT
+    "short_path" TEXT NOT NULL,
+    "counter" INT,
+    "created_at" INT NOT NULL,
+    "updated_at" INT NOT NULL,
+    "status" int NOT NULL
 );
 
 ALTER TABLE "urls" 
