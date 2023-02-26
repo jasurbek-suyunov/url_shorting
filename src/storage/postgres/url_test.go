@@ -138,29 +138,3 @@ func Test_UpdateUrl(t *testing.T) {
 	require.Equal(t, url2.OrgPath, "updated")
 
 }
-
-// func TestUrl_DeleteUrl(t *testing.T) {
-// 	_, then, _ := createurl(t)
-
-// 	err := strg.Url().DeleteUrl(context.Background(), then.ShortPath)
-// 	require.NoError(t, err)
-// }
-// func TestUrl_UpdateUrl(t *testing.T) {
-// 	_, then, _ := createurl(t)
-// 	then.Counter = 100
-// 	then.Status = 100
-// 	then.UpdatedAt = 100
-// 	then.QrCodePath = "100"
-// 	upd, err := strg.Url().UpdateUrl(context.Background(), then)
-// 	require.NoError(t, err)
-// 	require.NotEmpty(t, upd)
-// 	require.NotEmpty(t, upd.ID)
-// 	require.NotEmpty(t, upd.UserID)
-// 	require.NotEmpty(t, upd.OrgPath)
-// 	require.NotEmpty(t, upd.ShortPath)
-// 	require.NotEmpty(t, upd.Counter)
-// 	require.NotEmpty(t, upd.CreatedAt)
-// 	require.NotEmpty(t, upd.Status)
-// 	require.NotEmpty(t, upd.UpdatedAt)
-// 	require.NotEmpty(t, upd.QrCodePath)
-// }

@@ -8,6 +8,7 @@ import (
 )
 
 // Create Url
+// @Security ApiKeyAuth
 // @Summary  Create Url
 // @Description  Create Url
 // @Tags         URL
@@ -18,7 +19,7 @@ import (
 // @Response     400 {object}  models.Error "Bad request"
 // @Response     401 {object}  models.Error "Unauthorized"
 // @Failure  	 500  {object}  models.Error "Internal server error"
-// @Router       /url	[post]
+// @Router       /api/v1/url	[post]
 func (h *Handler) CreateUrl(c *gin.Context) {
 
 	var (
@@ -44,15 +45,132 @@ func (h *Handler) CreateUrl(c *gin.Context) {
 	c.JSON(201, url_result)
 }
 
-func (h *Handler) GetUrls(c *gin.Context) {}
+// Create Url
+// @Security ApiKeyAuth
+// @Summary  Get Urls
+// @Description  Get Urls
+// @Tags         URL
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  models.GetAllUrl "GetUrls successful"
+// @Response     400 {object}  models.Error "Bad request"
+// @Response     401 {object}  models.Error "Unauthorized"
+// @Failure  	 500  {object}  models.Error "Internal server error"
+// @Router       /api/v1/url	[get]
+func (h *Handler) GetUrls(c *gin.Context) {
+	urls, err := h.services.GetUrls(c)
+	if err != nil {
+		c.JSON(400, models.Error{
+			Error: err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, urls)
+}
 
-func (h *Handler) GetUrlByID(c *gin.Context) {}
+// Get Url
+// @Security ApiKeyAuth
+// @Summary  Get Url
+// @Description  Get Url
+// @Tags         URL
+// @Accept       json
+// @Produce      json
+// @Param        id query string  true "UrlId"
+// @Success      200  {object}  models.Url "GetUrl successful"
+// @Response     400 {object}  models.Error "Bad request"
+// @Response     401 {object}  models.Error "Unauthorized"
+// @Failure  	 500  {object}  models.Error "Internal server error"
+// @Router       /api/v1/url/{id}	[get]
+func (h *Handler) GetUrlByID(c *gin.Context) {
+	var (
+		url models.GetUrlByIdRequest
+	)
+	if err := c.ShouldBindJSON(&url); err != nil {
+		c.JSON(400, models.Error{
+			Error: err.Error(),
+		})
+		return
+	}
 
-func (h *Handler) DeleteUrl(c *gin.Context) {}
+	url_result, err := h.services.GetUrlByID(c, url.ID)
+	if err != nil {
+		c.JSON(400, models.Error{
+			Error: err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, url_result)
+}
 
-func (h *Handler) UpdateUrl(c *gin.Context) {}
+// Delete Url
+// @Security ApiKeyAuth
+// @Summary  Delete Url
+// @Description  Delete Url
+// @Tags         URL
+// @Accept       json
+// @Produce      json
+// @Param        id query string  true "UrlId"
+// @Success      200  {object}   models.Message "Delete successful"
+// @Response     400 {object}  models.Error "Bad request"
+// @Response     401 {object}  models.Error "Unauthorized"
+// @Failure  	 500  {object}  models.Error "Internal server error"
+// @Router       /api/v1/url/{id}	[delete]
+func (h *Handler) DeleteUrl(c *gin.Context) {
+	var (
+		url models.DeleteUrlRequest
+	)
+	if err := c.ShouldBindJSON(&url); err != nil {
+		c.JSON(400, models.Error{
+			Error: err.Error(),
+		})
+		return
+	}
 
-func (h *Handler) GetOriginalUrl(c *gin.Context) {}
+	err := h.services.DeleteUrl(c, url.ID)
+	if err != nil {
+		c.JSON(400, models.Error{
+			Error: err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, models.Message{
+		Message: "Delete successful",
+	})
+}
+
+// Update Url
+// @Security ApiKeyAuth
+// @Summary  Update Url
+// @Description  Update Url
+// @Tags         URL
+// @Accept       json
+// @Produce      json
+// @Param        url query string  true "Url"
+// @Success      200  {object}   models.Url "Delete successful"
+// @Response     400 {object}  models.Error "Bad request"
+// @Response     401 {object}  models.Error "Unauthorized"
+// @Failure  	 500  {object}  models.Error "Internal server error"
+// @Router      /api/v1/url/{url}	[put]
+func (h *Handler) UpdateUrl(c *gin.Context) {
+	var (
+		url models.UpdateUrlRequest
+	)
+	if err := c.ShouldBindJSON(&url); err != nil {
+		c.JSON(400, models.Error{
+			Error: err.Error(),
+		})
+		return
+	}
+
+	url_result, err := h.services.UpdateUrl(c, &url)
+	if err != nil {
+		c.JSON(400, models.Error{
+			Error: err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, url_result)
+}
 
 func (h *Handler) GetUrl(c *gin.Context) {
 

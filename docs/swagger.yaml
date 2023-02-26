@@ -1,4 +1,3 @@
-basePath: /api/v1
 definitions:
   models.DefaultResponse:
     properties:
@@ -12,6 +11,31 @@ definitions:
     properties:
       error:
         type: string
+    type: object
+  models.GetAllUrl:
+    properties:
+      meta:
+        $ref: '#/definitions/models.Meta'
+      urls:
+        items:
+          $ref: '#/definitions/models.Url'
+        type: array
+    type: object
+  models.Message:
+    properties:
+      message:
+        type: string
+    type: object
+  models.Meta:
+    properties:
+      current_page:
+        type: integer
+      per_page:
+        type: integer
+      total:
+        type: integer
+      total_page:
+        type: integer
     type: object
   models.Url:
     properties:
@@ -107,11 +131,179 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /api/v1/url:
+    get:
+      consumes:
+      - application/json
+      description: Get Urls
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: GetUrls successful
+          schema:
+            $ref: '#/definitions/models.GetAllUrl'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Urls
+      tags:
+      - URL
+    post:
+      consumes:
+      - application/json
+      description: Create Url
+      parameters:
+      - description: Url
+        in: body
+        name: url
+        required: true
+        schema:
+          $ref: '#/definitions/models.UrlRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Create successful
+          schema:
+            $ref: '#/definitions/models.Url'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Url
+      tags:
+      - URL
+  /api/v1/url/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Url
+      parameters:
+      - description: UrlId
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete successful
+          schema:
+            $ref: '#/definitions/models.Message'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Url
+      tags:
+      - URL
+    get:
+      consumes:
+      - application/json
+      description: Get Url
+      parameters:
+      - description: UrlId
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: GetUrl successful
+          schema:
+            $ref: '#/definitions/models.Url'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Url
+      tags:
+      - URL
+  /api/v1/url/{url}:
+    put:
+      consumes:
+      - application/json
+      description: Update Url
+      parameters:
+      - description: Url
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete successful
+          schema:
+            $ref: '#/definitions/models.Url'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Url
+      tags:
+      - URL
   /auth/signin:
     post:
       consumes:
       - application/json
-      description: SignIn User
+      description: SignIn UserUrlRequest
       parameters:
       - description: SingIn
         in: body
@@ -173,6 +365,8 @@ paths:
           description: Internal server error
           schema:
             $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Logout User
       tags:
       - User
@@ -206,38 +400,7 @@ paths:
       summary: SignUp User
       tags:
       - User
-  /url:
-    post:
-      consumes:
-      - application/json
-      description: Create Url
-      parameters:
-      - description: Url
-        in: body
-        name: url
-        required: true
-        schema:
-          $ref: '#/definitions/models.UrlRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Create successful
-          schema:
-            $ref: '#/definitions/models.Url'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/models.Error'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.Error'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/models.Error'
-      summary: Create Url
-      tags:
-      - URL
+securityDefinitions:
+  BasicAuth:
+    type: basic
 swagger: "2.0"

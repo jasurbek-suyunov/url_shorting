@@ -236,6 +236,7 @@ func (u *urlRepo) UpdateUrl(ctx context.Context, url *models.Url) (*models.Url, 
 
 	// check error
 	if err != nil {
+		log.Printf("Method: UpdateUrl, Error: %v", err)
 		return nil, err
 	}
 

@@ -30,3 +30,13 @@ type GetAllUrl struct {
 	Urls []*Url `json:"urls"`
 	Meta *Meta  `json:"meta"`
 }
+type GetUrlByIdRequest struct {
+	ID string `json:"id" binding:"required"`
+}
+type DeleteUrlRequest struct {
+	ID string `json:"id" binding:"required"`
+}
+
+type UpdateUrlRequest struct {
+	Url string `json:"url" binding:"required"`
+}

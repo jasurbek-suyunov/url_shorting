@@ -164,3 +164,28 @@ func (s *Service) GetUrl(ctx context.Context, short_path string) (string, error)
 	}
 	return urlFromDb.OrgPath, nil
 }
+func (s *Service) GetUrls(ctx context.Context) ([]*models.Url, error) {
+	user_id := ctx.Value("user_id").(string)
+	urls, err := s.storage.Url().GetUrls(ctx, user_id)
+	if err != nil {
+		return nil, err
+	}
+	return urls, nil
+}
+func (s *Service) GetUrlByID(ctx context.Context, id string) (*models.Url, error) {
+	url, err := s.storage.Url().GetUrlByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return url, nil
+}
+func (s *Service) DeleteUrl(ctx context.Context, id string) error {
+	err := s.storage.Url().DeleteUrlByID(ctx, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+func (s *Service) UpdateUrl(ctx context.Context, url *models.Url) (*models.Url, error) {
+	return nil, nil
+}
