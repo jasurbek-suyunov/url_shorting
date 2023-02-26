@@ -1,7 +1,11 @@
 # url_shorting
 
 
-`make container - Create containers`
+```
+mkdir uploads - Create folder for qrcode images
+
+make container - Create containers
+```
 
 `make migration - up migration up`
 
