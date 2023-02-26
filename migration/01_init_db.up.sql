@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS "urls" (
     "counter" INT,
     "created_at" INT NOT NULL,
     "updated_at" INT NOT NULL,
-    "qrcode_path" TEXT,
+    "qr_code_path" TEXT,
     "status" INT NOT NULL
 );
 

@@ -1,3 +1,4 @@
+basePath: /api/v1
 definitions:
   models.DefaultResponse:
     properties:
@@ -10,6 +11,27 @@ definitions:
   models.Error:
     properties:
       error:
+        type: string
+    type: object
+  models.Url:
+    properties:
+      counter:
+        type: integer
+      created_at:
+        type: integer
+      id:
+        type: string
+      org_path:
+        type: string
+      qr_code_path:
+        type: string
+      short_path:
+        type: string
+      status:
+        type: integer
+      updated_at:
+        type: integer
+      user_id:
         type: string
     type: object
   models.UrlRequest:
@@ -202,7 +224,7 @@ paths:
         "201":
           description: Create successful
           schema:
-            $ref: '#/definitions/models.UrlRequest'
+            $ref: '#/definitions/models.Url'
         "400":
           description: Bad request
           schema:

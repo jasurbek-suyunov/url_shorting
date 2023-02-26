@@ -15,6 +15,7 @@
         },
         "version": "1.0"
     },
+    "basePath": "/api/v1",
     "paths": {
         "/auth/signin": {
             "post": {
@@ -195,7 +196,7 @@
                     "201": {
                         "description": "Create successful",
                         "schema": {
-                            "$ref": "#/definitions/models.UrlRequest"
+                            "$ref": "#/definitions/models.Url"
                         }
                     },
                     "400": {
@@ -237,6 +238,38 @@
             "type": "object",
             "properties": {
                 "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Url": {
+            "type": "object",
+            "properties": {
+                "counter": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "org_path": {
+                    "type": "string"
+                },
+                "qr_code_path": {
+                    "type": "string"
+                },
+                "short_path": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "integer"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }

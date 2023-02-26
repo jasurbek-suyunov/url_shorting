@@ -204,7 +204,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Create successful",
                         "schema": {
-                            "$ref": "#/definitions/models.UrlRequest"
+                            "$ref": "#/definitions/models.Url"
                         }
                     },
                     "400": {
@@ -246,6 +246,38 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Url": {
+            "type": "object",
+            "properties": {
+                "counter": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "org_path": {
+                    "type": "string"
+                },
+                "qr_code_path": {
+                    "type": "string"
+                },
+                "short_path": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "integer"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }
@@ -346,7 +378,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "",
-	BasePath:         "",
+	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Swagger Example API",
 	Description:      "This is a sample server celler server.",

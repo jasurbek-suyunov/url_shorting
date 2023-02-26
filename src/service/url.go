@@ -107,16 +107,19 @@ func (s *Service) GetUrl(ctx context.Context, short_path string) (string, error)
 		var url models.UrlRequest
 		err = json.Unmarshal([]byte(urlFromRedis), &url)
 		if err != nil {
+			log.Println("Unmarshal error: ", err)
 			return "", err
 		}
 		if url.ExpCount != "" {
 			expCount, err := strconv.Atoi(url.ExpCount)
 			if err != nil {
+				log.Println("atoi count error: ", err)
 				return "", err
 			}
 			if expCount <= 0 {
 				err := s.cache.Redis().Delete(ctx, short_path)
 				if err != nil {
+					log.Println("count set error: ", err)
 					return "", err
 				}
 				return "", errors.New("not found")
@@ -127,15 +130,18 @@ func (s *Service) GetUrl(ctx context.Context, short_path string) (string, error)
 		if url.ExpTime != "" {
 			expTime, err := strconv.Atoi(url.ExpTime)
 			if err != nil {
+				log.Println("atoi time error: ", err)
 				return "", err
 			}
 			if time.Now().Before(time.Unix(int64(expTime), 0)) {
 				err := s.cache.Redis().Delete(ctx, short_path)
 				if err != nil {
+					log.Println("time set error: ", err)
 					return "", err
 				}
 				err = s.storage.Url().DeleteUrl(ctx, short_path)
 				if err != nil {
+					log.Println("delete from repo: ", err)
 					return "", err
 				}
 
@@ -144,6 +150,7 @@ func (s *Service) GetUrl(ctx context.Context, short_path string) (string, error)
 		}
 		marshal, err := json.Marshal(url)
 		if err != nil {
+			log.Println("resp unmarshal: ", err)
 			return "", err
 		}
 		s.cache.Redis().Set(ctx, short_path, string(marshal), time.Duration(0))
@@ -152,6 +159,7 @@ func (s *Service) GetUrl(ctx context.Context, short_path string) (string, error)
 
 	urlFromDb, err := s.storage.Url().GetUrlByShortPath(ctx, short_path)
 	if err != nil {
+		log.Println("get repo: ", err)
 		return "", err
 	}
 	return urlFromDb.OrgPath, nil
