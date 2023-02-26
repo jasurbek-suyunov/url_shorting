@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+
+	"github.com/SuyunovJasurbek/url_shorting/config"
 	"github.com/SuyunovJasurbek/url_shorting/src/handler"
 )
 
@@ -15,6 +18,7 @@ import (
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 // @securityDefinitions.basic  BasicAuth
 func main() {
+	cnf := config.NewConfig()
 	r := handler.SetupRouter()
-	r.Run(":8080")
+	r.Run(fmt.Sprintf(":%s", cnf.HTTPPort))
 }

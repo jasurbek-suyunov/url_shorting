@@ -20,12 +20,19 @@ func SetupRouter() *gin.Engine {
 
 	// get configs
 	cnf := config.NewConfig()
-
+	r.Static("/uploads", "./uploads")
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
 	// get db
 	db, err := postgres.NewPostgres(cnf)
 	// check error
 	if err != nil {
 		log.Println(err)
+	} else {
+		log.Println("db connected")
 	}
 
 	// get redis
@@ -33,6 +40,8 @@ func SetupRouter() *gin.Engine {
 	// check error
 	if err != nil {
 		log.Println(err)
+	} else {
+		log.Println("redis connected")
 	}
 
 	// get service and handler
@@ -66,7 +75,7 @@ func SetupRouter() *gin.Engine {
 		url.GET("", handler.GetUrls)
 		url.GET(":id", handler.GetUrlByID)
 		url.DELETE(":id", handler.DeleteUrl)
-		url.PUT(":id", handler.UpdateUrl)
+
 	}
 
 	return r

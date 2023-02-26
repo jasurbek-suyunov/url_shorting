@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"log"
 	"strconv"
 	"time"
@@ -28,7 +27,7 @@ func (s *Service) CreateUrl(ctx context.Context, url *models.UrlRequest) (*model
 	user_id = ctx.Value("user_id").(string)
 
 	qr_code, err := helper.GenerateQrCode(url.OrgPath)
-	fmt.Printf("qr_code: %v, err:= %v", qr_code, err)
+
 	if err != nil {
 		log.Printf("Error while generating qr code: %v", err)
 		qr_code = ""

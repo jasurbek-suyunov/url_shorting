@@ -39,43 +39,12 @@ func GenerateJWT(param *models.Token) string {
 	return tokenString
 }
 
-// func GenerateToken(user models.User, secret string) (string, error) {
-// 	token := jwt.NewWithClaims(&jwt.SigningMethodHMAC{}, jwt.MapClaims{
-// 		"foo": "bar",
-// 	})
-
-// 	tokenString, err := token.SignedString([]byte(secret))
-// 	if err != nil {
-// 		return "", err
-// 	}
-
-//		return tokenString, nil
-//	}
-
-// func ValidateToken(tokenString string, secret string) (*jwt.Token, error) {
-// 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-
-// 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-// 			return nil, errors.New("invalid signing method")
-// 		}
-
-// 		return secret, nil
-// 	})
-
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	return token, nil
-// }
-
 func ValidateJWT(tokenString string) (*models.Token, error) {
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return "", fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		fmt.Println(os.Getenv("SECRET_KEY"))
 		return []byte(os.Getenv("SECRET_KEY")), nil
 	})
 

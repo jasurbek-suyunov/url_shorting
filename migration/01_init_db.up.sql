@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS "urls" (
     "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     "user_id" UUID,
     "org_path" TEXT NOT NULL,
-    "short_path" TEXT NOT NULL,
+    "short_path" TEXT NOT NULL UNIQUE, 
     "counter" INT,
     "created_at" INT NOT NULL,
     "updated_at" INT NOT NULL,

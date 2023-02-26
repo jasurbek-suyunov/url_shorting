@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/SuyunovJasurbek/url_shorting/helper"
@@ -73,8 +72,12 @@ func (s *Service) GetUserByUsername(ctx context.Context, username string) (*mode
 			return nil, err
 		}
 	} else {
-		fmt.Println("key: ", user_string)
+
 		err = json.Unmarshal([]byte(user_string), &user)
+		if err != nil {
+			return nil, err
+		}
+		err = s.cache.Redis().Delete(ctx, username)
 		if err != nil {
 			return nil, err
 		}
@@ -83,4 +86,3 @@ func (s *Service) GetUserByUsername(ctx context.Context, username string) (*mode
 	// return result if no error
 	return user, nil
 }
-

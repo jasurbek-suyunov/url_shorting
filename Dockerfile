@@ -33,8 +33,6 @@ RUN apk add --no-cache tzdata
 RUN apk update
 RUN apk add make
 
-ENV TZ Asia/Tashkent
-
 EXPOSE 8000
 
 CMD ["/main"]

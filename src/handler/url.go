@@ -75,24 +75,17 @@ func (h *Handler) GetUrls(c *gin.Context) {
 // @Tags         URL
 // @Accept       json
 // @Produce      json
-// @Param        id query string  true "UrlId"
+// @Param        id path string  true "UrlId"
 // @Success      200  {object}  models.Url "GetUrl successful"
 // @Response     400 {object}  models.Error "Bad request"
 // @Response     401 {object}  models.Error "Unauthorized"
 // @Failure  	 500  {object}  models.Error "Internal server error"
 // @Router       /api/v1/url/{id}	[get]
 func (h *Handler) GetUrlByID(c *gin.Context) {
-	var (
-		url models.GetUrlByIdRequest
-	)
-	if err := c.ShouldBindJSON(&url); err != nil {
-		c.JSON(400, models.Error{
-			Error: err.Error(),
-		})
-		return
-	}
 
-	url_result, err := h.services.GetUrlByID(c, url.ID)
+	id := c.Param("id")
+
+	url_result, err := h.services.GetUrlByID(c, id)
 	if err != nil {
 		c.JSON(400, models.Error{
 			Error: err.Error(),
@@ -109,24 +102,16 @@ func (h *Handler) GetUrlByID(c *gin.Context) {
 // @Tags         URL
 // @Accept       json
 // @Produce      json
-// @Param        id query string  true "UrlId"
+// @Param        id path string  true "UrlId"
 // @Success      200  {object}   models.Message "Delete successful"
 // @Response     400 {object}  models.Error "Bad request"
 // @Response     401 {object}  models.Error "Unauthorized"
 // @Failure  	 500  {object}  models.Error "Internal server error"
 // @Router       /api/v1/url/{id}	[delete]
 func (h *Handler) DeleteUrl(c *gin.Context) {
-	var (
-		url models.DeleteUrlRequest
-	)
-	if err := c.ShouldBindJSON(&url); err != nil {
-		c.JSON(400, models.Error{
-			Error: err.Error(),
-		})
-		return
-	}
 
-	err := h.services.DeleteUrl(c, url.ID)
+	id := c.Param("id")
+	err := h.services.DeleteUrl(c, id)
 	if err != nil {
 		c.JSON(400, models.Error{
 			Error: err.Error(),
@@ -136,40 +121,6 @@ func (h *Handler) DeleteUrl(c *gin.Context) {
 	c.JSON(http.StatusOK, models.Message{
 		Message: "Delete successful",
 	})
-}
-
-// Update Url
-// @Security ApiKeyAuth
-// @Summary  Update Url
-// @Description  Update Url
-// @Tags         URL
-// @Accept       json
-// @Produce      json
-// @Param        url query string  true "Url"
-// @Success      200  {object}   models.Url "Delete successful"
-// @Response     400 {object}  models.Error "Bad request"
-// @Response     401 {object}  models.Error "Unauthorized"
-// @Failure  	 500  {object}  models.Error "Internal server error"
-// @Router      /api/v1/url/{url}	[put]
-func (h *Handler) UpdateUrl(c *gin.Context) {
-	var (
-		url models.UpdateUrlRequest
-	)
-	if err := c.ShouldBindJSON(&url); err != nil {
-		c.JSON(400, models.Error{
-			Error: err.Error(),
-		})
-		return
-	}
-
-	url_result, err := h.services.UpdateUrl(c, &url)
-	if err != nil {
-		c.JSON(400, models.Error{
-			Error: err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, url_result)
 }
 
 func (h *Handler) GetUrl(c *gin.Context) {

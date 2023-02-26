@@ -114,9 +114,23 @@ func (u *urlRepo) DeleteUrlByID(ctx context.Context, id string) error {
 func (u *urlRepo) GetUrlByShortPath(ctx context.Context, shortPath string) (*models.Url, error) {
 
 	var result models.Url
-	query := `SELECT ` + urlFields + ` FROM ` + urlTable + ` WHERE short_path = $1`
+	query := `UPDATE urls SET counter=counter+1 WHERE short_path = $1 RETURNING ` + urlFields
 
-	err := u.db.Get(&result, query, shortPath)
+	err := u.db.QueryRow(
+		query,
+		shortPath,
+	).Scan(
+		&result.ID,
+		&result.UserID,
+		&result.OrgPath,
+		&result.ShortPath,
+		&result.Counter,
+		&result.CreatedAt,
+		&result.UpdatedAt,
+		&result.Status,
+		&result.QrCodePath,
+	)
+
 	if err != nil {
 		log.Printf("Method: GetUrlByShortPath, Error: %v", err)
 		return nil, err
@@ -133,7 +147,7 @@ func (u *urlRepo) GetUrlByID(ctx context.Context, UserID string) (*models.Url, e
 	var url models.Url
 
 	// query
-	query := `SELECT ` + urlFields + ` FROM ` + urlTable + ` WHERE user_id = $1`
+	query := `SELECT ` + urlFields + ` FROM ` + urlTable + ` WHERE id = $1`
 
 	// exec and scan
 	err := u.db.QueryRow(
