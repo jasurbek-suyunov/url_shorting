@@ -111,6 +111,107 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /api/v1/auth/signin:
+    post:
+      consumes:
+      - application/json
+      description: SignIn UserUrlRequest
+      parameters:
+      - description: SingIn
+        in: body
+        name: SignIn
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: SignIn successful
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: SignIn User
+      tags:
+      - User
+  /api/v1/auth/signout:
+    post:
+      consumes:
+      - application/json
+      description: Logout User
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logout successful
+          schema:
+            $ref: '#/definitions/models.DefaultResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Logout User
+      tags:
+      - User
+  /api/v1/auth/singup:
+    post:
+      consumes:
+      - application/json
+      description: SignUp User
+      parameters:
+      - description: SignUp
+        in: body
+        name: SignUp
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserSignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: SignUp successful
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: SignUp User
+      tags:
+      - User
   /api/v1/url:
     get:
       consumes:
@@ -246,105 +347,4 @@ paths:
       summary: Get Url
       tags:
       - URL
-  /auth/signin:
-    post:
-      consumes:
-      - application/json
-      description: SignIn UserUrlRequest
-      parameters:
-      - description: SingIn
-        in: body
-        name: SignIn
-        required: true
-        schema:
-          $ref: '#/definitions/models.UserLoginRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: SignIn successful
-          schema:
-            $ref: '#/definitions/models.UserResponse'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/models.Error'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.Error'
-        "404":
-          description: Not found
-          schema:
-            $ref: '#/definitions/models.Error'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/models.Error'
-      summary: SignIn User
-      tags:
-      - User
-  /auth/signout:
-    post:
-      consumes:
-      - application/json
-      description: Logout User
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Logout successful
-          schema:
-            $ref: '#/definitions/models.DefaultResponse'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/models.Error'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.Error'
-        "404":
-          description: Not found
-          schema:
-            $ref: '#/definitions/models.Error'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/models.Error'
-      security:
-      - ApiKeyAuth: []
-      summary: Logout User
-      tags:
-      - User
-  /auth/singup:
-    post:
-      consumes:
-      - application/json
-      description: SignUp User
-      parameters:
-      - description: SignUp
-        in: body
-        name: SignUp
-        required: true
-        schema:
-          $ref: '#/definitions/models.UserSignUpRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: SignUp successful
-          schema:
-            $ref: '#/definitions/models.UserResponse'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/models.Error'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/models.Error'
-      summary: SignUp User
-      tags:
-      - User
 swagger: "2.0"

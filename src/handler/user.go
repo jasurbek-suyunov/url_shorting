@@ -18,7 +18,7 @@ import (
 // @Success      201  {object}  models.UserResponse "SignUp successful"
 // @Response     400 {object}  models.Error "Bad request"
 // @Failure  	 500  {object}  models.Error "Internal server error"
-// @Router       /auth/singup	[post]
+// @Router        /api/v1/auth/singup	[post]
 func (h *Handler) SignUp(c *gin.Context) {
 
 	// variable
@@ -67,7 +67,7 @@ func (h *Handler) SignUp(c *gin.Context) {
 // @Response     401 {object}  models.Error "Unauthorized"
 // @Response     404 {object}  models.Error "Not found"
 // @Failure  	 500  {object}  models.Error "Internal server error"
-// @Router       /auth/signin	[post]
+// @Router        /api/v1/auth/signin	[post]
 func (h *Handler) SignIn(c *gin.Context) {
 
 	// variable
@@ -134,7 +134,7 @@ func (h *Handler) SignIn(c *gin.Context) {
 // @Response     401 {object}  models.Error "Unauthorized"
 // @Response     404 {object}  models.Error "Not found"
 // @Failure  	 500  {object}  models.Error "Internal server error"
-// @Router       /auth/signout	[post]
+// @Router        /api/v1/auth/signout	[post]
 func (h *Handler) SignOut(c *gin.Context) {
 	c.SetCookie("token", "", 0, "", "", false, false)
 
