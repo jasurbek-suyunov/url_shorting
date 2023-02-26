@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS "user" (
     "last_name" VARCHAR(255),
     "email" VARCHAR(255) UNIQUE NOT NULL,
     "password_hash" TEXT NOT NULL, 
-    "created_at" INT NOT NULL
+    "created_at" INT NOT NULL    
 );
 
 

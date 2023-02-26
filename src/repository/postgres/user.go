@@ -15,10 +15,10 @@ type userRepo struct {
 		id string
 	)
 // CreateUser implements repository.UserI
-func (ar *userRepo) CreateUser(createusermodel models.User) (models.User, error) {
+func (u *userRepo) CreateUser(createusermodel models.User) (models.User, error) {
 		// ...0: Checking if user already exists
 		query0 := fmt.Sprintf(`SELECT id FROM %s WHERE email = $1`, userTable)
-		row := ar.db.QueryRow(query0, createusermodel.Username)
+		row := u.db.QueryRow(query0, createusermodel.Username)
 		err := row.Scan(&id)
 		if err == nil {
 			return models.User{}, fmt.Errorf("username already authorized")
