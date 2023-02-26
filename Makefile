@@ -6,7 +6,8 @@ go:
 watch:
 	google-chrome 'http://${HTTP_HOST}:${HTTP_PORT}/swagger/index.html'
 	make go
-
+tidy: 
+	go mod tidy
 login:
 	docker exec -it ${DOCKER_CONTAINER_NAME} psql ${POSTGRES_DATABASE} ${POSTGRES_USER}
 
