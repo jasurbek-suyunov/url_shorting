@@ -44,27 +44,10 @@ func NewUserRepo(db *sqlx.DB) *userRepo {
 // CreateUser implements repository.UserI
 func (u *userRepo) CreateUser(ctx context.Context, usr *models.User) (*models.User, error) {
 
-	resp := &models.User{}
+	resp := models.User{}
 	// ...1: Creating user
-	query := fmt.Sprintf(
-		`INSERT INTO
-					 %s
-				 (
-					 username,
-					 first_name,
-					 last_name,
-					 email,
-					 password_hash,
-					 created_at
-				 ) VALUES (
-					 $1,
-					 $2,
-					 $3,
-					 $4,
-					 $5,
-					 $6
-				 ) RETURNING %s
-			 `, userTable, userFields)
+	query := fmt.Sprintf(`INSERT INTO users(username, first_name, last_name, email, password_hash, created_at) 
+	VALUES ($1, $2, $3, $4, $5, $6) RETURNING %s`, userFields)
 
 	if err := u.db.QueryRow(
 		query,
@@ -83,9 +66,10 @@ func (u *userRepo) CreateUser(ctx context.Context, usr *models.User) (*models.Us
 		&resp.PasswordHash,
 		&resp.CreatedAt,
 	); err != nil {
+		fmt.Println("err: ", err.Error())
 		return nil, err
 	}
 
 	// ...2: Returning successful response
-	return resp, nil
+	return &resp, nil
 }

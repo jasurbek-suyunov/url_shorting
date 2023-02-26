@@ -16,8 +16,10 @@ CREATE TABLE IF NOT EXISTS "urls" (
     "user_id" UUID,
     "created_at" INT NOT NULL,
     "org_path" TEXT NOT NULL,
-    "short_hash" TEXT NOT NULL,
+    "short_path" TEXT NOT NULL,
+    "qr_code_path" TEXT,
     "counter" INT
+
 );
 
 ALTER TABLE "urls" 

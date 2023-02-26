@@ -18,7 +18,7 @@ import (
 // @Success      201  {object}  models.UserResponse "SignUp successful"
 // @Response     400 {object}  models.Error "Bad request"
 // @Failure  	 500  {object}  models.Error "Internal server error"
-// @Router       /user/singup	[post]
+// @Router       /auth/singup	[post]
 func (h *Handler) SignUp(c *gin.Context) {
 
 	// variable
@@ -39,7 +39,7 @@ func (h *Handler) SignUp(c *gin.Context) {
 	}
 
 	// create user
-	result, err := h.services.CreateUser(c, &user)
+	err := h.services.CreateUser(c, &user)
 
 	// check error
 	if err != nil {
@@ -50,13 +50,8 @@ func (h *Handler) SignUp(c *gin.Context) {
 	}
 
 	// return result if no error
-	c.JSON(201, models.UserResponse{
-		ID:        result.ID,
-		Username:  result.Username,
-		FirstName: result.FirstName,
-		LastName:  result.LastName,
-		Email:     result.Email,
-		CreatedAt: result.CreatedAt,
+	c.JSON(201, models.Message{
+		Message: "User created successfully",
 	})
 }
 
@@ -72,8 +67,8 @@ func (h *Handler) SignUp(c *gin.Context) {
 // @Response     401 {object}  models.Error "Unauthorized"
 // @Response     404 {object}  models.Error "Not found"
 // @Failure  	 500  {object}  models.Error "Internal server error"
-// @Router       /user/singin	[post]
-func (h *Handler) Login(c *gin.Context) {
+// @Router       /auth/signin	[post]
+func (h *Handler) SignIn(c *gin.Context) {
 
 	// variable
 	var login models.UserLoginRequest
@@ -138,8 +133,8 @@ func (h *Handler) Login(c *gin.Context) {
 // @Response     401 {object}  models.Error "Unauthorized"
 // @Response     404 {object}  models.Error "Not found"
 // @Failure  	 500  {object}  models.Error "Internal server error"
-// @Router       /user/logout	[get]
-func (h *Handler) Logout(c *gin.Context) {
+// @Router       /auth/signout	[post]
+func (h *Handler) SignOut(c *gin.Context) {
 	c.SetCookie("token", "", 0, "", "", false, false)
 
 	c.JSON(http.StatusOK, models.DefaultResponse{

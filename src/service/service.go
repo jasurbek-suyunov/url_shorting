@@ -5,11 +5,13 @@ import (
 )
 
 type Service struct {
-	repo storage.StorageI
+	storage storage.StorageI
+	cache   storage.CacheStorageI
 }
 
-func NewService(repo storage.StorageI) *Service {
+func NewService(repo storage.StorageI, redis storage.CacheStorageI) *Service {
 	return &Service{
-		repo: repo,
+		storage: repo,
+		cache:   redis,
 	}
 }

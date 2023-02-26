@@ -18,11 +18,6 @@ type Storage struct {
 	url  storage.UrlI
 }
 
-// Token implements storage.StorageI
-func (*Storage) Token() storage.TokenI {
-	panic("unimplemented")
-}
-
 func NewPostgres(cfg *config.Config) (storage.StorageI, error) {
 	psqlConnString := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
 		cfg.PostgresHost,
@@ -31,6 +26,7 @@ func NewPostgres(cfg *config.Config) (storage.StorageI, error) {
 		cfg.PostgresDatabase,
 		cfg.PostgresPassword,
 	)
+	fmt.Println(psqlConnString)
 	db, err := sqlx.Open("postgres", psqlConnString)
 	if err != nil {
 		log.Fatalf("cannot connect to postgresql db: %s", err.Error())

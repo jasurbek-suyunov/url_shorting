@@ -2,17 +2,14 @@ package storage
 
 import (
 	"context"
+	"time"
 
 	"github.com/SuyunovJasurbek/url_shorting/models"
 )
 
 type StorageI interface {
-	Token() TokenI
 	User() UserI
 	Url() UrlI
-}
-
-type TokenI interface {
 }
 
 type UserI interface {
@@ -29,4 +26,14 @@ type UrlI interface {
 	GetUrlByID(ctx context.Context, urlID string) (*models.Url, error)
 	GetUrls(ctx context.Context, userID string) (*models.GetAllUrl, error)
 	UpdateUrl(ctx context.Context, url *models.Url) (*models.Url, error)
+}
+
+type CacheStorageI interface {
+	Redis() RedisI
+}
+type RedisI interface {
+	Set(ctx context.Context, key, value string, expTime time.Duration) error
+	Delete(ctx context.Context, key string) error
+	Get(ctx context.Context, key string) (value string, err error)
+	Contains(ctx context.Context, key string) (bool, error)
 }

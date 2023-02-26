@@ -72,38 +72,7 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
-  /user/logout:
-    get:
-      consumes:
-      - application/json
-      description: Logout User
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Logout successful
-          schema:
-            $ref: '#/definitions/models.DefaultResponse'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/models.Error'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.Error'
-        "404":
-          description: Not found
-          schema:
-            $ref: '#/definitions/models.Error'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/models.Error'
-      summary: Logout User
-      tags:
-      - User
-  /user/singin:
+  /auth/signin:
     post:
       consumes:
       - application/json
@@ -141,7 +110,38 @@ paths:
       summary: SignIn User
       tags:
       - User
-  /user/singup:
+  /auth/signout:
+    post:
+      consumes:
+      - application/json
+      description: Logout User
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logout successful
+          schema:
+            $ref: '#/definitions/models.DefaultResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Logout User
+      tags:
+      - User
+  /auth/singup:
     post:
       consumes:
       - application/json

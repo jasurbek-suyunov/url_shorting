@@ -1,25 +1,24 @@
 package postgres
 
-
 import (
 	"context"
 	"math/rand"
 	"testing"
-	_ "github.com/lib/pq"
+
 	"github.com/SuyunovJasurbek/url_shorting/models"
 	"github.com/google/uuid"
+	_ "github.com/lib/pq"
 	"github.com/stretchr/testify/require"
 )
 
 func genurl() *models.Url {
 
-  randomUserID := uuid.New().String()
-  randomOrgPath:= uuid.New().String()
-  randomShortPath := uuid.New().String()
-  randomCounter := rand.Intn(1000)
-  randomCreatedAt := rand.Intn(1000)
-  randomType := uuid.New().String()
-
+	randomUserID := uuid.New().String()
+	randomOrgPath := uuid.New().String()
+	randomShortPath := uuid.New().String()
+	randomCounter := rand.Intn(1000)
+	randomCreatedAt := rand.Intn(1000)
+	randomType := rand.Intn(1000)
 
 	return &models.Url{
 		ID:        randomUserID,
@@ -27,15 +26,15 @@ func genurl() *models.Url {
 		OrgPath:   randomOrgPath,
 		ShortPath: randomShortPath,
 		Counter:   randomCounter,
-		CreatedAt: randomCreatedAt,
+		CreatedAt: int64(randomCreatedAt),
 		Type:      randomType,
 	}
 }
 func createurl(t *testing.T) (*models.Url, *models.Url, error) {
-	mockurl 	:= genurl()
+	mockurl := genurl()
 	require.NotEmpty(t, mockurl)
 
-	then, err :=strg.Url().CreateUrl(context.Background(), mockurl)
+	then, err := strg.Url().CreateUrl(context.Background(), mockurl)
 	return mockurl, then, err
 }
 

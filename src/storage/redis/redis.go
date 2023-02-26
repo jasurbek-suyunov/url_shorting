@@ -13,11 +13,19 @@ import (
 	"golang.org/x/net/context"
 )
 
-type redisCache struct {
+type RedisCache struct {
 	rdb *redis.Client
 
-	token storage.TokenI
-	user  storage.UserI
+	cache storage.RedisI
+}
+
+// Redis implements storage.CacheStorageI
+func (r *RedisCache) Redis() storage.RedisI {
+
+	if r.cache == nil {
+		r.cache = NewCache(r.rdb)
+	}
+	return r.cache
 }
 
 // consts for redis connection
@@ -25,7 +33,7 @@ const (
 	readTimeout = 10 * time.Second // 10 seconds
 )
 
-func NewRedisCache(cfg config.Config, expires time.Duration) (*redisCache, error) {
+func NewRedisCache(cfg *config.Config) (storage.CacheStorageI, error) {
 
 	// ...1: creating context
 	var ctx context.Context = context.Background()
@@ -49,44 +57,12 @@ func NewRedisCache(cfg config.Config, expires time.Duration) (*redisCache, error
 	_, err := pong.Result()
 	if err != nil {
 		return nil, errors.New("cannot connect to redis")
+	} else {
+		fmt.Println("connected to redis")
 	}
 
 	// ...4: returning redis cache db
-	return &redisCache{
+	return &RedisCache{
 		rdb: rdb,
 	}, nil
-}
-
-// ...1: Token
-func (r *redisCache) Token() storage.TokenI {
-	if r.token == nil {
-		// r.token = NewTokenCacheRepo(r.rdb)
-	}
-
-	return r.token
-}
-
-// ...2: User
-func (r *redisCache) User() storage.UserI {
-	if r.user == nil {
-		// r.user = NewUserCacheRepo(r.rdb)
-	}
-
-	return r.user
-}
-
-// ///////////  TODO: BELOW FROM THERE SHOULD BE FIXED
-func (r *redisCache) Contains(ctx context.Context, key string) (bool, error) {
-	have, err := r.rdb.Exists(ctx, key).Result()
-	if have == 1 && err == nil {
-		return true, nil
-	} else if have == 0 && err == nil {
-		return false, nil
-	} else {
-		return false, err
-	}
-}
-
-func (r *redisCache) LogOut(ctx context.Context, key string) error {
-	return r.rdb.Del(ctx, key).Err()
 }
