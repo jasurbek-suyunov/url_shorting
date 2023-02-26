@@ -2,7 +2,8 @@ package postgres
 
 import (
 	"context"
-	"fmt"
+	"database/sql"
+	"log"
 
 	"github.com/SuyunovJasurbek/url_shorting/models"
 	"github.com/jmoiron/sqlx"
@@ -10,6 +11,103 @@ import (
 
 type urlRepo struct {
 	db *sqlx.DB
+}
+
+const (
+	urlTable  = "urls"
+	urlFields = `id,user_id, org_path, short_path, counter, created_at, updated_at, status, qr_code_path`
+)
+
+// CreateUrl implements repository.UrlI
+func (u *urlRepo) CreateUrl(ctx context.Context, url *models.Url) (*models.Url, error) {
+
+	// response object
+	var result models.Url
+
+	// query
+	query := `INSERT INTO urls(org_path, short_path, counter, created_at, updated_at, user_id, qr_code_path,status) VALUES($1, $2, $3, $4, $5, $6, $7,$8) RETURNING ` + urlFields
+
+	// exec and scan
+	err := u.db.QueryRow(
+		query,
+		url.OrgPath,
+		url.ShortPath,
+		url.Counter,
+		url.CreatedAt,
+		url.UpdatedAt,
+		url.UserID,
+		url.QrCodePath,
+		url.Status,
+	).Scan(
+		&result.ID,
+		&result.UserID,
+		&result.OrgPath,
+		&result.ShortPath,
+		&result.Counter,
+		&result.CreatedAt,
+		&result.UpdatedAt,
+		&result.Status,
+		&result.QrCodePath,
+	)
+
+	// check error
+	if err != nil {
+		log.Printf("Method: CreateUrl, Error: %v", err)
+		return nil, err
+	}
+
+	// return  if success
+	return &result, nil
+}
+
+// DeleteUrlByShortURL implements storage.UrlI
+func (u *urlRepo) DeleteUrlByShortURL(ctx context.Context, short_path string) error {
+
+	// query
+	query := `DELETE FROM urls WHERE short_path = $1`
+
+	// exec
+	result, err := u.db.Exec(query, short_path)
+
+	// check error
+	if err != nil {
+		log.Printf("Method: DeleteUrlByShortURL, Error: %v", err)
+		return err
+	}
+
+	// check affected rows
+	if rows, err := result.RowsAffected(); err != nil || rows == 0 {
+		log.Printf("Method: DeleteUrlByShortURL, Error: %v", err)
+		return sql.ErrNoRows
+	}
+
+	// return nil if success
+	return nil
+}
+
+// DeleteUrlByID implements storage.UrlI
+func (u *urlRepo) DeleteUrlByID(ctx context.Context, id string) error {
+
+	// query
+	query := `DELETE FROM urls WHERE id = $1`
+
+	// exec
+	result, err := u.db.Exec(query, id)
+
+	// check error
+	if err != nil {
+		log.Printf("Method: DeleteUrlByID, Error: %v", err)
+		return err
+	}
+
+	// check affected rows
+	if rows, err := result.RowsAffected(); err != nil || rows == 0 {
+		log.Printf("Method: DeleteUrlByID, Error: %v", err)
+		return sql.ErrNoRows
+	}
+
+	// return nil if success
+	return nil
 }
 
 // GetUrlByShortPath implements storage.UrlI
@@ -20,6 +118,7 @@ func (u *urlRepo) GetUrlByShortPath(ctx context.Context, shortPath string) (*mod
 
 	err := u.db.Get(&result, query, shortPath)
 	if err != nil {
+		log.Printf("Method: GetUrlByShortPath, Error: %v", err)
 		return nil, err
 	}
 
@@ -27,35 +126,20 @@ func (u *urlRepo) GetUrlByShortPath(ctx context.Context, shortPath string) (*mod
 
 }
 
-const (
-	urlTable  = "urls"
-	urlFields = `id,user_id, org_path, short_path, counter, created_at, updated_at, status, qr_code_path`
-)
-
-// DeleteUrl implements storage.UrlI
-func (u *urlRepo) DeleteUrl(ctx context.Context, short_path string) error {
-
-	query := fmt.Sprintf(`DELETE FROM %s WHERE short_path = $1`, urlTable)
-	_, err := u.db.Exec(query, short_path)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
 // GetUrlByID implements storage.UrlI
 func (u *urlRepo) GetUrlByID(ctx context.Context, UserID string) (*models.Url, error) {
-	url := models.Url{}
-	query := fmt.Sprintf(`
-	SELECT
-		%s
-	FROM
-		%s
-	WHERE
-		id = $1`, urlFields, userTable)
-	fmt.Println(query)
-	row := u.db.QueryRow(query, UserID)
-	err := row.Scan(
+
+	// response object
+	var url models.Url
+
+	// query
+	query := `SELECT ` + urlFields + ` FROM ` + urlTable + ` WHERE user_id = $1`
+
+	// exec and scan
+	err := u.db.QueryRow(
+		query,
+		UserID,
+	).Scan(
 		&url.ID,
 		&url.UserID,
 		&url.OrgPath,
@@ -66,61 +150,80 @@ func (u *urlRepo) GetUrlByID(ctx context.Context, UserID string) (*models.Url, e
 		&url.Status,
 		&url.QrCodePath,
 	)
+
+	// check error
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Printf("Method: GetUrlByID, Error: %v", err)
 		return nil, err
 	}
 	return &url, nil
 }
+
 // GetUrls implements storage.UrlI
-func (u *urlRepo) GetUrls(ctx context.Context, url string) (*models.GetAllUrl, error) {
-	// var urls *models.GetAllUrl
-	// var count int = 0
-	// query := fmt.Sprintf(`
-	// SELECT
-	// id,
-	// user_id,
-	// org_path,
-	// short_path,
-	// counter,
-	// created_at,
-	// type
-	// FROM
-	// 	%s
-	// `, urlTable)
+func (u *urlRepo) GetUrls(ctx context.Context, id string) ([]*models.Url, error) {
 
-	// rows, err := u.db.Query(query)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// defer rows.Close()
+	// response object
+	urls := []*models.Url{}
 
-	// for rows.Next() {
+	// query
+	query := `SELECT ` + urlFields + ` FROM ` + urlTable + ` WHERE user_id = $1 `
 
-	// 	err := rows.Scan(
-	// 		&url.Urls.ID,
-	// 		&url.Urls.UserID,
-	// 		&url.Urls.OrgPath,
-	// 		&url.Urls.ShortPath,
-	// 		&url.Urls.Counter,
-	// 		&url.Urls.CreatedAt,
-	// 		&url.Urls.Type,
-	// 	)
+	// exec
+	rows, err := u.db.Query(query, id)
 
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
-	// 	urls = append(urls, url)
-	// }
-	// return urls, nil
-	return nil, nil
+	// check error
+	if err != nil {
+		log.Printf("Method: GetUrls, Error: %v", err)
+		return nil, err
+	}
+
+	// close rows
+	defer rows.Close()
+
+	// loop rows
+	for rows.Next() {
+
+		// append object
+		var url models.Url
+
+		// scan
+		err := rows.Scan(
+			&url.ID,
+			&url.UserID,
+			&url.OrgPath,
+			&url.ShortPath,
+			&url.Counter,
+			&url.CreatedAt,
+			&url.UpdatedAt,
+			&url.Status,
+			&url.QrCodePath,
+		)
+
+		// check error
+		if err != nil {
+			log.Printf("Method: GetUrls, Error: %v", err)
+			return nil, err
+		}
+
+		// append to response object
+		urls = append(urls, &url)
+	}
+
+	// return nil if success
+	return urls, nil
 }
+
 // UpdateUrl implements storage.UrlI
 func (u *urlRepo) UpdateUrl(ctx context.Context, url *models.Url) (*models.Url, error) {
-	upt := models.Url{}
-	query := fmt.Sprintf("UPDATE %s SET short_path = $1 ,updated_at= $2 WHERE id = $3", urlTable)
-	rows := u.db.QueryRow(query, url.ShortPath, url.UpdatedAt, url.ID)
-	err := rows.Scan(
+
+	// response object
+	var upt models.Url
+
+	// query
+	query := "UPDATE urls SET org_path = $1 ,updated_at= $2 WHERE id = $3"
+
+	// exec and scan
+	err := u.db.QueryRow(query, url.OrgPath, url.UpdatedAt, url.ID).Scan(
 		&upt.ID,
 		&upt.UserID,
 		&upt.OrgPath,
@@ -130,46 +233,14 @@ func (u *urlRepo) UpdateUrl(ctx context.Context, url *models.Url) (*models.Url, 
 		&upt.UpdatedAt,
 		&upt.Status,
 	)
+
+	// check error
 	if err != nil {
 		return nil, err
 	}
+
+	// return if success
 	return &upt, nil
-}
-
-// CreateUrl implements repository.UrlI
-func (u *urlRepo) CreateUrl(ctx context.Context, url *models.Url) (*models.Url, error) {
-	resp := models.Url{}
-	// ...1: Creating url
-
-	query := `INSERT INTO urls( status,org_path, short_path, counter, created_at, updated_at, user_id, qr_code_path) VALUES($1, $2, $3, $4, $5, $6, $7,$8) RETURNING ` + urlFields
-	fmt.Println(query)
-	if err := u.db.QueryRow(
-		query,
-		url.Status,
-		url.OrgPath,
-		url.ShortPath,
-		url.Counter,
-		url.CreatedAt,
-		url.UpdatedAt,
-		url.UserID,
-		url.QrCodePath,
-	).Scan(
-		&resp.ID,
-		&resp.UserID,
-		&resp.OrgPath,
-		&resp.ShortPath,
-		&resp.Counter,
-		&resp.CreatedAt,
-		&resp.UpdatedAt,
-		&resp.Status,
-		&resp.QrCodePath,
-	); err != nil {
-		fmt.Println(err)
-		return nil, err
-	}
-
-	// ...2: Returning successful response
-	return &resp, nil
 }
 
 func NewUrlRepo(db *sqlx.DB) *urlRepo {
