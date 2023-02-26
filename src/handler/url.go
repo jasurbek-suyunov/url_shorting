@@ -6,7 +6,6 @@ import (
 	"github.com/SuyunovJasurbek/url_shorting/models"
 	"github.com/gin-gonic/gin"
 )
-
 // Create Url
 // @Security ApiKeyAuth
 // @Summary  Create Url
@@ -52,7 +51,7 @@ func (h *Handler) CreateUrl(c *gin.Context) {
 // @Tags         URL
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  models.GetAllUrl "GetUrls successful"
+// @Success      200  {object} []models.Url "GetUrls successful"
 // @Response     400 {object}  models.Error "Bad request"
 // @Response     401 {object}  models.Error "Unauthorized"
 // @Failure  	 500  {object}  models.Error "Internal server error"

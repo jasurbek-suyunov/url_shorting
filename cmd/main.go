@@ -16,7 +16,6 @@ import (
 // @contact.email  support@swagger.io
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-// @securityDefinitions.basic  BasicAuth
 func main() {
 	cnf := config.NewConfig()
 	r := handler.SetupRouter()

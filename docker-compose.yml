@@ -32,6 +32,7 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
+        # image: realtemirov/najottalim:latest
         ports:
             - "8000:8000"
         env_file:

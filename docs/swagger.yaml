@@ -12,30 +12,10 @@ definitions:
       error:
         type: string
     type: object
-  models.GetAllUrl:
-    properties:
-      meta:
-        $ref: '#/definitions/models.Meta'
-      urls:
-        items:
-          $ref: '#/definitions/models.Url'
-        type: array
-    type: object
   models.Message:
     properties:
       message:
         type: string
-    type: object
-  models.Meta:
-    properties:
-      current_page:
-        type: integer
-      per_page:
-        type: integer
-      total:
-        type: integer
-      total_page:
-        type: integer
     type: object
   models.Url:
     properties:
@@ -131,23 +111,6 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
-  /{url}:
-    get:
-      consumes:
-      - application/json
-      description: Access Url
-      parameters:
-      - description: Url
-        in: path
-        name: url
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses: {}
-      summary: Access Url
-      tags:
-      - Access
   /api/v1/auth/signin:
     post:
       consumes:
@@ -260,7 +223,9 @@ paths:
         "200":
           description: GetUrls successful
           schema:
-            $ref: '#/definitions/models.GetAllUrl'
+            items:
+              $ref: '#/definitions/models.Url'
+            type: array
         "400":
           description: Bad request
           schema:
@@ -382,7 +347,4 @@ paths:
       summary: Get Url
       tags:
       - URL
-securityDefinitions:
-  BasicAuth:
-    type: basic
 swagger: "2.0"

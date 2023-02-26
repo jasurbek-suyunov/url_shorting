@@ -124,17 +124,3 @@ func Test_GetUrls(t *testing.T) {
 	require.Len(t, urls, 1)
 
 }
-
-func Test_UpdateUrl(t *testing.T) {
-
-	url := createRandomUrl(t)
-	defer deleteRandomUrl(t, url)
-
-	// good case
-	url.OrgPath = "updated"
-	url2, err := strg.Url().UpdateUrl(context.Background(), url)
-	require.NoError(t, err)
-	require.NotEmpty(t, url2)
-	require.Equal(t, url2.OrgPath, "updated")
-
-}

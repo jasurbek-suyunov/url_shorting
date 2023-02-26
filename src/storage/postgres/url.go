@@ -227,37 +227,6 @@ func (u *urlRepo) GetUrls(ctx context.Context, id string) ([]*models.Url, error)
 	return urls, nil
 }
 
-// UpdateUrl implements storage.UrlI
-func (u *urlRepo) UpdateUrl(ctx context.Context, url *models.Url) (*models.Url, error) {
-
-	// response object
-	var upt models.Url
-
-	// query
-	query := "UPDATE urls SET org_path = $1 ,updated_at= $2 WHERE id = $3"
-
-	// exec and scan
-	err := u.db.QueryRow(query, url.OrgPath, url.UpdatedAt, url.ID).Scan(
-		&upt.ID,
-		&upt.UserID,
-		&upt.OrgPath,
-		&upt.ShortPath,
-		&upt.Counter,
-		&upt.CreatedAt,
-		&upt.UpdatedAt,
-		&upt.Status,
-	)
-
-	// check error
-	if err != nil {
-		log.Printf("Method: UpdateUrl, Error: %v", err)
-		return nil, err
-	}
-
-	// return if success
-	return &upt, nil
-}
-
 func NewUrlRepo(db *sqlx.DB) *urlRepo {
 	return &urlRepo{db}
 }

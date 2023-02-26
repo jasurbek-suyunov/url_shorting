@@ -185,6 +185,3 @@ func (s *Service) DeleteUrl(ctx context.Context, id string) error {
 	}
 	return nil
 }
-func (s *Service) UpdateUrl(ctx context.Context, url *models.Url) (*models.Url, error) {
-	return nil, nil
-}

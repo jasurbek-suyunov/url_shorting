@@ -26,8 +26,7 @@ type UrlI interface {
 	DeleteUrlByID(ctx context.Context, urlID string) error
 	GetUrlByID(ctx context.Context, urlID string) (*models.Url, error)
 	GetUrlByShortPath(ctx context.Context, shortPath string) (*models.Url, error)
-	GetUrls(ctx context.Context, id string) ([]*models.Url, error)
-	UpdateUrl(ctx context.Context, url *models.Url) (*models.Url, error)
+	GetUrls(ctx context.Context, url string) ([]*models.Url, error)
 }
 
 type CacheStorageI interface {
