@@ -9,6 +9,7 @@ import (
 	"github.com/SuyunovJasurbek/url_shorting/src/storage"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq" // postgres driver
+	"github.com/spf13/cast"
 )
 
 type Storage struct {
@@ -23,7 +24,7 @@ func (*Storage) Token() storage.TokenI {
 }
 
 func NewPostgres(cfg *config.Config) (storage.StorageI, error) {
-	psqlConnString := fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s sslmode=disable",
+	psqlConnString := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
 		cfg.PostgresHost,
 		cfg.PostgresPort,
 		cfg.PostgresUser,
@@ -36,8 +37,8 @@ func NewPostgres(cfg *config.Config) (storage.StorageI, error) {
 	}
 
 	// setting some settings for db
-	db.SetConnMaxLifetime(time.Duration(time.Duration(cfg.PostgresMaxConnections).Minutes()))
-	db.SetMaxOpenConns(cfg.PostgresMaxConnections)
+	db.SetConnMaxLifetime(time.Duration(time.Duration(cast.ToInt(cfg.PostgresConnMaxIdleTime)).Minutes()))
+	db.SetMaxOpenConns(cast.ToInt(cfg.PostgresMaxConnections))
 
 	// checking for Ping&Pong
 	if err := db.Ping(); err != nil {

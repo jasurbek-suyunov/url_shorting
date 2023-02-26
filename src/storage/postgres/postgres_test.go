@@ -11,7 +11,7 @@ import (
 
 var cfg config.Config = config.Config{
 	PostgresHost:     "localhost",
-	PostgresPort:     5437,
+	PostgresPort:     "5437",
 	PostgresUser:     "postgres",
 	PostgresPassword: "postgres",
 	PostgresDatabase: "najottalim",

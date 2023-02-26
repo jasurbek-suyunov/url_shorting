@@ -9,6 +9,7 @@ import (
 	"github.com/SuyunovJasurbek/url_shorting/config"
 	"github.com/SuyunovJasurbek/url_shorting/src/storage"
 	"github.com/go-redis/redis/v8"
+	"github.com/spf13/cast"
 	"golang.org/x/net/context"
 )
 
@@ -36,11 +37,11 @@ func NewRedisCache(cfg config.Config, expires time.Duration) (*redisCache, error
 
 	// ...2: opening connection to redis
 	rdb := redis.NewClient(&redis.Options{
-		Addr:        fmt.Sprintf("%s:%d", cfg.RedisHost, cfg.RedisPort),
-		Password:    "",          // no password set
-		DB:          cfg.RedisDB, // use default DB
+		Addr:        fmt.Sprintf("%s:%s", cfg.RedisHost, cfg.RedisPort),
+		Password:    "",                      // no password set
+		DB:          cast.ToInt(cfg.RedisDB), // use default DB
 		PoolTimeout: readTimeout,
-		PoolSize:    cfg.RedisPoolSize,
+		PoolSize:    cast.ToInt(cfg.RedisPoolSize),
 	})
 
 	// ...3: checking connection
