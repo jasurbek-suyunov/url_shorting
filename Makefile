@@ -24,7 +24,9 @@ psqlcontainer:
 	docker run --name ${DOCKER_POSTGRES_CONTAINER_NAME} -d -p ${POSTGRES_PORT}:5432 --env-file .env postgres:15-alpine3.16
 rediscontainer:
 	docker run --name ${DOCKER_REDIS_CONTAINER_NAME} -p ${REDIS_PORT}:6379 -d --env-file .env redis:7.0.5-alpine3.16
-
+container:
+	docker run --name ${DOCKER_POSTGRES_CONTAINER_NAME} -d -p ${POSTGRES_PORT}:5432 --env-file .env postgres:15-alpine3.16
+	docker run --name ${DOCKER_REDIS_CONTAINER_NAME} -p ${REDIS_PORT}:6379 -d --env-file .env redis:7.0.5-alpine3.16
 tidy:
 	go mod tidy
 
