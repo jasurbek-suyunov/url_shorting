@@ -57,7 +57,7 @@ func (h *Handler) SignUp(c *gin.Context) {
 
 // SignIn User
 // @Summary  SignIn User
-// @Description  SignIn User
+// @Description  SignIn UserUrlRequest
 // @Tags         User
 // @Accept       json
 // @Produce      json
@@ -123,6 +123,7 @@ func (h *Handler) SignIn(c *gin.Context) {
 }
 
 // Logout User
+// @Security ApiKeyAuth
 // @Summary  Logout User
 // @Description  Logout User
 // @Tags         User
