@@ -40,7 +40,7 @@ func (s *Service) CreateUrl(ctx context.Context, url *models.UrlRequest) (*model
 		ShortPath: short_path,
 		Counter:   0,
 		CreatedAt: time.Now().Unix(),
-		Type:      status,
+		Status:    status,
 	})
 
 	if err != nil {

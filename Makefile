@@ -14,7 +14,7 @@ stop-psql:
 	docker stop ${DOCKER_POSTGRES_CONTAINER_NAME}
 
 login-redis:
-	docker exec -it ${DOCKER_REDIS_CONTAINER_NAME} redis-cli -n ${REDIS_CLIENT_DB}
+	docker exec -it ${DOCKER_REDIS_CONTAINER_NAME} redis-cli -n ${REDIS_DB}
 start-redis:
 	docker start ${DOCKER_REDIS_CONTAINER_NAME}
 stop-redis:

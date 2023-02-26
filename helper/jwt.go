@@ -29,7 +29,7 @@ func GenerateJWT(param *models.Token) string {
 		"exp": unixTime,
 	})
 
-	tokenString, err := token.SignedString([]byte(os.Getenv("TOKEN_SECRET")))
+	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
 
 	if err != nil {
 		log.Printf("failed from generate token: %v", err)
@@ -75,7 +75,7 @@ func ValidateJWT(tokenString string) (*models.Token, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return "", fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-
+		fmt.Println(os.Getenv("SECRET_KEY"))
 		return []byte(os.Getenv("SECRET_KEY")), nil
 	})
 

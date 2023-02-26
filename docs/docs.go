@@ -175,6 +175,58 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/url": {
+            "post": {
+                "description": "Create Url",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "URL"
+                ],
+                "summary": "Create Url",
+                "parameters": [
+                    {
+                        "description": "Url",
+                        "name": "url",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UrlRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Create successful",
+                        "schema": {
+                            "$ref": "#/definitions/models.UrlRequest"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -194,6 +246,26 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UrlRequest": {
+            "type": "object",
+            "required": [
+                "org_path"
+            ],
+            "properties": {
+                "custom_url": {
+                    "type": "string"
+                },
+                "exp_count": {
+                    "type": "string"
+                },
+                "exp_time": {
+                    "type": "string"
+                },
+                "org_path": {
                     "type": "string"
                 }
             }

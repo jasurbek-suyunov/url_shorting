@@ -12,6 +12,19 @@ definitions:
       error:
         type: string
     type: object
+  models.UrlRequest:
+    properties:
+      custom_url:
+        type: string
+      exp_count:
+        type: string
+      exp_time:
+        type: string
+      org_path:
+        type: string
+    required:
+    - org_path
+    type: object
   models.UserLoginRequest:
     properties:
       password:
@@ -171,4 +184,38 @@ paths:
       summary: SignUp User
       tags:
       - User
+  /url:
+    post:
+      consumes:
+      - application/json
+      description: Create Url
+      parameters:
+      - description: Url
+        in: body
+        name: url
+        required: true
+        schema:
+          $ref: '#/definitions/models.UrlRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Create successful
+          schema:
+            $ref: '#/definitions/models.UrlRequest'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Create Url
+      tags:
+      - URL
 swagger: "2.0"

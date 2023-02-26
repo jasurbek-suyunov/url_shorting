@@ -11,6 +11,7 @@ import (
 // @Tags         URL
 // @Accept       json
 // @Produce      json
+// @Param        url body models.UrlRequest true "Url"
 // @Success      201  {object}  models.UrlRequest "Create successful"
 // @Response     400 {object}  models.Error "Bad request"
 // @Response     401 {object}  models.Error "Unauthorized"

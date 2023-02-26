@@ -6,8 +6,10 @@ type Url struct {
 	OrgPath   string `json:"org_path" db:"org_path"`
 	ShortPath string `json:"short_path" db:"short_path"`
 	Counter   int    `json:"counter" db:"counter"`
+	Status    int    `json:"status" db:"status"`
 	CreatedAt int64  `json:"created_at" db:"created_at"`
-	Type      int    `json:"type" db:"type"`
+	UpdatedAt int64  `json:"updated_at" db:"updated_at"
+	`
 }
 
 type UrlRequest struct {
