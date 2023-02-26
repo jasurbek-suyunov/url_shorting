@@ -53,6 +53,8 @@ func NewConfig() {
 	}
 
 	cnf := Config{}
+	cnf.HTTPPort = getOrReturnDefaultValue("HTTP_PORT", 8080).(int)
+	cnf.HTTPHost = getOrReturnDefaultValue("HTTP_HOST", "localhost").(string)
 
 	cnf.PostgresHost = getOrReturnDefaultValue("POSTGRES_HOST", "localhost").(string)
 	cnf.PostgresPort = getOrReturnDefaultValue("POSTGRES_PORT", 5432).(int)
@@ -61,6 +63,8 @@ func NewConfig() {
 	cnf.PostgresPassword = getOrReturnDefaultValue("POSTGRES_PASSWORD", "postgres").(string)
 	cnf.PostgresMaxConnections = getOrReturnDefaultValue("POSTGRES_MAX_CONNECTIONS", 10).(int)
 	cnf.PostgresConnMaxIdleTime = getOrReturnDefaultValue("POSTGRES_CONN_MAX_IDLE_TIME", 10).(int)
+
+	cnf.SecretKey = getOrReturnDefaultValue("SECRET_KEY0", "secret").(string)
 
 	cnf.RedisHost = getOrReturnDefaultValue("REDIS_HOST", "localhost").(string)
 	cnf.RedisPort = getOrReturnDefaultValue("REDIS_PORT", 6379).(int)
