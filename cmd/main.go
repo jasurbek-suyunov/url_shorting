@@ -1,6 +1,8 @@
 package main
 
-func main(){
-  r := setupRouter()
-  r.Run(":8080")
+func main() {
+
+	r := setupRouter()
+	r.Run(":8080")
+
 }
