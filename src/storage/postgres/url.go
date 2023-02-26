@@ -12,10 +12,31 @@ type urlRepo struct {
 	db *sqlx.DB
 }
 
+// DeleteUrl implements storage.UrlI
+func (*urlRepo) DeleteUrl(ctx context.Context, url *models.Url) (*models.Url, error) {
+	panic("unimplemented")
+}
+
+// GetUrlByID implements storage.UrlI
+func (*urlRepo) GetUrlByID(ctx context.Context, urlID string) (*models.Url, error) {
+	panic("unimplemented")
+}
+
+// GetUrls implements storage.UrlI
+func (*urlRepo) GetUrls(ctx context.Context, userID string) (*models.GetAllUrl, error) {
+	panic("unimplemented")
+}
+
+// UpdateUrl implements storage.UrlI
+func (*urlRepo) UpdateUrl(ctx context.Context, url *models.Url) (*models.Url, error) {
+	panic("unimplemented")
+}
+
 const (
-	urlTable = "urls"
+	urlTable  = "urls"
 	urlFields = `id, user_id, org_path, short_path, counter, created_at, type`
 )
+
 // CreateUrl implements repository.UrlI
 func (u *urlRepo) CreateUrl(ctx context.Context, url *models.Url) (*models.Url, error) {
 	resp := &models.Url{}
@@ -37,7 +58,7 @@ func (u *urlRepo) CreateUrl(ctx context.Context, url *models.Url) (*models.Url, 
 					 $4,
 					 $5
 				 ) RETURNING %s
-			 `,urlTable,urlFields)
+			 `, urlTable, urlFields)
 
 	if err := u.db.QueryRow(
 		query,

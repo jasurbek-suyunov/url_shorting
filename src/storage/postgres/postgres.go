@@ -51,14 +51,14 @@ func NewPostgres(cfg *config.Config) (storage.StorageI, error) {
 
 func (s *Storage) User() storage.UserI {
 	if s.user == nil {
-		s.user = NewUserRepo(s.DB)
+		s.user = NewUserRepo(s.db)
 	}
 	return s.user
 }
 
 func (s *Storage) Url() storage.UrlI {
 	if s.url == nil {
-		s.url = NewUrlRepo(s.DB)
+		s.url = NewUrlRepo(s.db)
 	}
 	return s.url
 }

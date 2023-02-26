@@ -12,6 +12,26 @@ type userRepo struct {
 	db *sqlx.DB
 }
 
+// DeleteUser implements storage.UserI
+func (*userRepo) DeleteUser(ctx context.Context, user *models.User) (*models.User, error) {
+	panic("unimplemented")
+}
+
+// GetUserByID implements storage.UserI
+func (*userRepo) GetUserByID(ctx context.Context, id string) (*models.User, error) {
+	panic("unimplemented")
+}
+
+// GetUserByUsername implements storage.UserI
+func (*userRepo) GetUserByUsername(ctx context.Context, username string) (*models.User, error) {
+	panic("unimplemented")
+}
+
+// UpdateUser implements storage.UserI
+func (*userRepo) UpdateUser(ctx context.Context, user *models.User) (*models.User, error) {
+	panic("unimplemented")
+}
+
 const (
 	userTable  = "users"
 	userFields = `id, username, first_name, last_name, email, password_hash, created_at`
