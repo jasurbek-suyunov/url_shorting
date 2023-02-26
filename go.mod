@@ -2,7 +2,10 @@ module github.com/SuyunovJasurbek/url_shorting
 
 go 1.20
 
-require github.com/gin-gonic/gin v1.9.0
+require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/gin-gonic/gin v1.9.0
+)
 
 require (
 	github.com/bytedance/sonic v1.8.0 // indirect
