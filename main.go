@@ -1,7 +1,6 @@
 package main
 
-import "fmt"
-
 func main(){
-  fmt.Println("Hello World")
+  r := setupRouter()
+  r.Run(":8080")
 }
