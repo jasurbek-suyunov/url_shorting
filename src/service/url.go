@@ -121,6 +121,11 @@ func (s *Service) GetUrl(ctx context.Context, short_path string) (string, error)
 					log.Println("count set error: ", err)
 					return "", err
 				}
+				err = s.storage.Url().DeleteUrlByShortURL(ctx, short_path)
+				if err != nil {
+					log.Println("delete url: ", err)
+					return "", err
+				}
 				return "", errors.New("not found")
 			}
 			expCount--
