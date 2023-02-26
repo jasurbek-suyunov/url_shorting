@@ -43,7 +43,6 @@ func createurl(t *testing.T) (*models.Url, *models.Url, error) {
 	then, err := strg.Url().CreateUrl(context.Background(), mockurl)
 	return mockurl, then, err
 }
-
 func TestUrl_CreateUrl(t *testing.T) {
 	then, _, err := createurl(t)
 	require.NoError(t, err)
@@ -58,7 +57,6 @@ func TestUrl_CreateUrl(t *testing.T) {
 	require.NotEmpty(t, then.UpdatedAt)
 	require.NotEmpty(t, then.QrCodePath)
 }
-
 func TestUrl_GetUrlByID(t *testing.T) {
 	_, then, err := createurl(t)
 	require.NoError(t, err)
@@ -83,6 +81,25 @@ func TestUrl_GetUrlByID(t *testing.T) {
 func TestUrl_DeleteUrl(t *testing.T) {
 	_, then, _ := createurl(t)
 
-	err = strg.Url().DeleteUrl(context.Background(), then.ShortPath)
-	
+	err:= strg.Url().DeleteUrl(context.Background(), then.ShortPath)
+	require.NoError(t, err)	
+}
+func TestUrl_UpdateUrl(t *testing.T) {
+	_, then, _ := createurl(t)
+	then.Counter = 100
+	then.Status = 100
+	then.UpdatedAt = 100
+	then.QrCodePath = "100"
+	upd, err:= strg.Url().UpdateUrl(context.Background(), then)
+	require.NoError(t, err)
+	require.NotEmpty(t, upd)
+	require.NotEmpty(t, upd.ID)
+	require.NotEmpty(t, upd.UserID)
+	require.NotEmpty(t, upd.OrgPath)
+	require.NotEmpty(t, upd.ShortPath)
+	require.NotEmpty(t, upd.Counter)
+	require.NotEmpty(t, upd.CreatedAt)
+	require.NotEmpty(t, upd.Status)
+	require.NotEmpty(t, upd.UpdatedAt)
+	require.NotEmpty(t, upd.QrCodePath)
 }
