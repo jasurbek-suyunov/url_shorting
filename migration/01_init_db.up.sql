@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE IF NOT EXISTS "user" (
+CREATE TABLE IF NOT EXISTS "users" (
     "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     "username" VARCHAR(255) UNIQUE,
     "first_name" VARCHAR(255),
@@ -11,16 +11,16 @@ CREATE TABLE IF NOT EXISTS "user" (
 );
 
 
-CREATE TABLE IF NOT EXISTS "url" (
+CREATE TABLE IF NOT EXISTS "urls" (
     "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     "user_id" UUID,
     "created_at" INT NOT NULL,
     "org_path" TEXT NOT NULL,
     "short_hash" TEXT NOT NULL,
-    "counter" INT,
+    "counter" INT
 );
 
-ALTER TABLE "url" 
+ALTER TABLE "urls" 
 ADD CONSTRAINT "fk_url_user_id" 
 FOREIGN KEY ("user_id") 
-REFERENCES "user"("id") ON DELETE CASCADE;
+REFERENCES "users"("id") ON DELETE CASCADE;

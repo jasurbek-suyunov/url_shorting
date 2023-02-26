@@ -1,8 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
-
 	"github.com/SuyunovJasurbek/url_shorting/helper"
 	"github.com/gin-gonic/gin"
 )
@@ -14,11 +12,11 @@ func Auth(secret string) gin.HandlerFunc {
 			c.AbortWithStatusJSON(401, gin.H{"error": "No token found"})
 		}
 
-		token, err := helper.ValidateToken(tokenString, secret)
+		param, err := helper.ValidateJWT(tokenString)
 		if err != nil {
 			c.AbortWithStatusJSON(401, gin.H{"error": err.Error()})
 		}
-
-		fmt.Println(token)
+		c.Set("user_id", param.UserId)
+		c.Next()
 	}
 }

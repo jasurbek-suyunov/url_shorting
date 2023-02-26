@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/SuyunovJasurbek/url_shorting/config"
-	"github.com/SuyunovJasurbek/url_shorting/src/repository"
+	"github.com/SuyunovJasurbek/url_shorting/src/storage"
 	"github.com/go-redis/redis/v8"
 	"golang.org/x/net/context"
 )
@@ -15,8 +15,8 @@ import (
 type redisCache struct {
 	rdb *redis.Client
 
-	token repository.TokenI
-	user  repository.UserI
+	token storage.TokenI
+	user  storage.UserI
 }
 
 // consts for redis connection
@@ -57,7 +57,7 @@ func NewRedisCache(cfg config.Config, expires time.Duration) (*redisCache, error
 }
 
 // ...1: Token
-func (r *redisCache) Token() repository.TokenI {
+func (r *redisCache) Token() storage.TokenI {
 	if r.token == nil {
 		// r.token = NewTokenCacheRepo(r.rdb)
 	}
@@ -66,7 +66,7 @@ func (r *redisCache) Token() repository.TokenI {
 }
 
 // ...2: User
-func (r *redisCache) User() repository.UserI {
+func (r *redisCache) User() storage.UserI {
 	if r.user == nil {
 		// r.user = NewUserCacheRepo(r.rdb)
 	}

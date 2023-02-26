@@ -47,7 +47,7 @@ func getOrReturnDefaultValue(key string, defaultValue interface{}) interface{} {
 	return defaultValue
 }
 
-func NewConfig() {
+func NewConfig() *Config {
 	if err := godotenv.Load(); err != nil {
 		fmt.Println("No .env file found")
 	}
@@ -73,4 +73,5 @@ func NewConfig() {
 	cnf.RedisPoolSize = getOrReturnDefaultValue("REDIS_POOL_SIZE", 10).(int)
 	cnf.RedisExpiryTime = getOrReturnDefaultValue("REDIS_EXPIRY_TIME", 10).(int)
 
+	return &cnf
 }
