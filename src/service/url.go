@@ -186,4 +186,3 @@ func (s *Service) DeleteUrl(ctx context.Context, id string) error {
 	}
 	return nil
 }
-func (s *Service) UpdateUrl()

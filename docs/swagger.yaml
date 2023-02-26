@@ -264,41 +264,6 @@ paths:
       summary: Get Url
       tags:
       - URL
-  /api/v1/url/{url}:
-    put:
-      consumes:
-      - application/json
-      description: Update Url
-      parameters:
-      - description: Url
-        in: query
-        name: url
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Delete successful
-          schema:
-            $ref: '#/definitions/models.Url'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/models.Error'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.Error'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/models.Error'
-      security:
-      - ApiKeyAuth: []
-      summary: Update Url
-      tags:
-      - URL
   /auth/signin:
     post:
       consumes:
@@ -400,7 +365,4 @@ paths:
       summary: SignUp User
       tags:
       - User
-securityDefinitions:
-  BasicAuth:
-    type: basic
 swagger: "2.0"

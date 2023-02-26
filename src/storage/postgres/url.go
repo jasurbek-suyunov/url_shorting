@@ -115,30 +115,6 @@ func (u *urlRepo) GetUrls(ctx context.Context, url string) (*models.GetAllUrl, e
 	// return urls, nil
 	return nil, nil
 }
-// UpdateUrl implements storage.UrlI
-func (u *urlRepo) UpdateUrl(ctx context.Context, url *models.Url) (*models.Url, error) {
-	upt := models.Url{}
-	query := fmt.Sprintf("UPDATE %s SET short_path = $1 ,updated_at= $2 WHERE id = $3", urlTable)
-	fmt.Println(url.ID)
-	fmt.Println(query)
-	rows := u.db.QueryRow(query, url.ShortPath, url.UpdatedAt, url.ID)
-	err := rows.Scan(
-		&upt.ID,
-		&upt.UserID,
-		&upt.OrgPath,
-		&upt.ShortPath,
-		&upt.Counter,
-		&upt.CreatedAt,
-		&upt.UpdatedAt,
-		&upt.Status,
-	)
-	if err != nil {
-		fmt.Println("+++++++++++++")
-		fmt.Println(err.Error())
-		return nil, err
-	}
-	return &upt, nil
-}
 
 // CreateUrl implements repository.UrlI
 func (u *urlRepo) CreateUrl(ctx context.Context, url *models.Url) (*models.Url, error) {

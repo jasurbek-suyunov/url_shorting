@@ -66,7 +66,6 @@ func SetupRouter() *gin.Engine {
 		url.GET("", handler.GetUrls)
 		url.GET(":id", handler.GetUrlByID)
 		url.DELETE(":id", handler.DeleteUrl)
-		url.PUT(":id", handler.UpdateUrl)
 	}
 
 	return r

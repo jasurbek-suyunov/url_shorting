@@ -6,7 +6,6 @@ import (
 	"github.com/SuyunovJasurbek/url_shorting/models"
 	"github.com/gin-gonic/gin"
 )
-
 // Create Url
 // @Security ApiKeyAuth
 // @Summary  Create Url
@@ -134,42 +133,6 @@ func (h *Handler) DeleteUrl(c *gin.Context) {
 		Message: "Delete successful",
 	})
 }
-// Update Url
-// @Security ApiKeyAuth
-// @Summary  Update Url
-// @Description  Update Url
-// @Tags         URL
-// @Accept       json
-// @Produce      json
-// @Param        url query string  true "Url"
-// @Success      200  {object}   models.Url "Delete successful"
-// @Response     400 {object}  models.Error "Bad request"
-// @Response     401 {object}  models.Error "Unauthorized"
-// @Failure  	 500  {object}  models.Error "Internal server error"
-// @Router      /api/v1/url/{url}	[put]
-func (h *Handler) UpdateUrl(c *gin.Context) {
-	var (
-		url models.UpdateUrlRequest
-	)
-	if err := c.ShouldBindJSON(&url); err != nil {
-		c.JSON(400, models.Error{
-			Error: err.Error(),
-		})
-		return
-	}
-
-	url_result, err := h.services.UpdateUrl(c, &url)
-	if err != nil {
-		c.JSON(400, models.Error{
-			Error: err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, url_result)
-}
-
-
-
 
 func (h *Handler) GetUrl(c *gin.Context) {
 

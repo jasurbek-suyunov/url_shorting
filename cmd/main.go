@@ -13,7 +13,6 @@ import (
 // @contact.email  support@swagger.io
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-// @securityDefinitions.basic  BasicAuth
 func main() {
 	r := handler.SetupRouter()
 	r.Run(":8080")
