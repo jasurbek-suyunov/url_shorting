@@ -7,6 +7,7 @@ type Url struct {
 	ShortPath string `json:"short_path" db:"short_path"`
 	Counter   int    `json:"counter" db:"counter"`
 	Status    int    `json:"status" db:"status"`
+	QrCodePath string `json:"qr_code_path" db:"qr_code_path"`
 	CreatedAt int64  `json:"created_at" db:"created_at"`
 	UpdatedAt int64  `json:"updated_at" db:"updated_at"
 	`

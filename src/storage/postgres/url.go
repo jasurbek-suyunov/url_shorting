@@ -14,41 +14,33 @@ type urlRepo struct {
 
 const (
 	urlTable  = "urls"
-	urlFields = ` id, user_id, org_path, short_path, counter, created_at,updated_at,status `
+	urlFields = `id,user_id, org_path, short_path, counter, created_at, updated_at, status, qrcode_path`
 )
 
 // DeleteUrl implements storage.UrlI
-func (u *urlRepo) DeleteUrl(ctx context.Context, urlID string) (*models.Url, error) {
+func (u *urlRepo) DeleteUrl(ctx context.Context, short_path string) error{
 
-	query := fmt.Sprintf(`DELETE FROM %s WHERE id = $1`, urlTable)
-	_, err := u.db.Exec(query, urlID)
+	query := fmt.Sprintf(`DELETE FROM %s WHERE  = $1`, urlTable)
+	_, err := u.db.Exec(query, short_path)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return nil, nil
+	return nil
 }
 
 // GetUrlByID implements storage.UrlI
-func (u *urlRepo) GetUrlByID(ctx context.Context, urlID string) (*models.Url, error) {
-	url := &models.Url{}
+func (u *urlRepo) GetUrlByID(ctx context.Context, UserID string) (*models.Url, error) {
+	url := models.Url{}
 	query := fmt.Sprintf(`
 	SELECT
-	id, 
-	user_id,
-	org_path, 
-	short_path,
-	counter, 
-	created_at,
-	update_at,
-	type
+		%s
 	FROM
 		%s
 	WHERE
-		id = $1`,
-		userTable)
-
-	row := u.db.QueryRow(query, urlID)
+		id = $1`, urlFields,userTable)
+	fmt.Println(query)
+	row := u.db.QueryRow(query, UserID)
 	err := row.Scan(
 		&url.ID,
 		&url.UserID,
@@ -58,11 +50,13 @@ func (u *urlRepo) GetUrlByID(ctx context.Context, urlID string) (*models.Url, er
 		&url.CreatedAt,
 		&url.UpdatedAt,
 		&url.Status,
+		&url.QrCodePath,
 	)
 	if err != nil {
+		fmt.Println(err.Error())
 		return nil, err
 	}
-	return url, nil
+	return &url, nil
 }
 
 // GetUrls implements storage.UrlI
@@ -135,7 +129,7 @@ func (u *urlRepo) CreateUrl(ctx context.Context, url *models.Url) (*models.Url, 
 	resp := models.Url{}
 	// ...1: Creating url
 
-	query := `INSERT INTO urls( status,org_path, short_path, counter, created_at, updated_at, user_id) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING ` + urlFields
+	query := `INSERT INTO urls( status,org_path, short_path, counter, created_at, updated_at, user_id, qrcode_path) VALUES($1, $2, $3, $4, $5, $6, $7,$8) RETURNING ` + urlFields
 	fmt.Println(query)
 	if err := u.db.QueryRow(
 		query,
@@ -146,6 +140,7 @@ func (u *urlRepo) CreateUrl(ctx context.Context, url *models.Url) (*models.Url, 
 		url.CreatedAt,
 		url.UpdatedAt,
 		url.UserID,
+		url.QrCodePath,
 	).Scan(
 		&resp.ID,
 		&resp.UserID,
@@ -155,6 +150,7 @@ func (u *urlRepo) CreateUrl(ctx context.Context, url *models.Url) (*models.Url, 
 		&resp.CreatedAt,
 		&resp.UpdatedAt,
 		&resp.Status,
+		&resp.QrCodePath,
 	); err != nil {
 		fmt.Println(err)
 		return nil, err
